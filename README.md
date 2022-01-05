@@ -503,7 +503,7 @@ node_base=xftd_root..'/node-v10.16.3-darwin-x64/bin' //// node(npm,yarn)所在�
 mysqlclient_base=xftd_root..'/mysqlbin' // mysqlclient所在目录
 git_dir = '/usr/bin/' // git所在目录
 
-在lua目录下建立gitconfig.config文件,第一行git账号,第二行git密码,行间回车分割
+在根目录下建立gitconfig.config文件,第一行git账号,第二行git密码,行间回车分割
 local gcf = readfile('gitconfig.config')
 git_user = gcf:split('\n')[1]
 git_user_pwd = gcf:split('\n')[2]
