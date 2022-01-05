@@ -1,0 +1,18 @@
+       image: $imagename
+       container_name: $cname
+       restart: always
+       deploy:
+         resources:
+           limits:
+             cpus: '0.85'
+             memory: 128M            
+       links: 
+         $links
+       depends_on: 
+         $depends 
+       ports: 
+         - "8081:80"
+         - "4431:443"
+       #volumes: 
+       #  - $drdir/nginx/www/html:/var/www/html
+       entrypoint: /usr/bin/entrypoint.sh -d $dependdt -c 'nginx -g "daemon off;"'

@@ -1,0 +1,25 @@
+       image: redis:6.2.4
+       #command: > 
+       #  /bin/bash -c '
+       #  sleep 8;
+       #  echo "sleep over";
+       #  nc -lk 0.0.0.0 6379;
+       #  '       
+       container_name: $cname
+       restart: always
+       deploy:
+         resources:
+           limits:
+             cpus: '0.75'
+             memory: 128M         
+       links: 
+         $links
+       depends_on: 
+         $depends        
+       ports: 
+         - "30001:6379"
+       command: 
+         redis-server /etc/redis/redis.conf --appendonly yes
+       volumes: 
+         - $drdir/redis/data:/data:rw
+         - $drdir/redis/redis.conf:/etc/redis/redis.conf:rw

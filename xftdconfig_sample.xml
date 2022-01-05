@@ -1,0 +1,377 @@
+<xml>
+	<sysname>sample_system</sysname>
+	<buildprod>false</buildprod>
+
+		<base>
+		  <modules>
+			  <module>
+				  <name>mysqlerp</name>
+				  <cname>mysqlerp_c</cname>
+				  <imagetmpl>mysql5.7.22</imagetmpl>
+			  </module>
+
+			  <module>
+				  <name>cacheerp</name>
+				  <cname>cacheerp_c</cname>
+				  <imagetmpl>redis</imagetmpl>
+			  </module>
+
+		  </modules>
+    </base>
+  
+	<business>
+		<modules>
+			
+			<module>
+			  <name>config</name>
+			  <cname>config_c</cname>
+				<depends>
+					<depend>eureka</depend>
+				</depends>				  
+			  <rels>
+				  <rel>eureka</rel>
+			  </rels>					  		  
+			  <src>git clone --depth 1 -b dev-alliance http://1.1.1.1:8899/xxx/xxx.git</src>
+			  <path>aaa-config-service</path>
+			  <buildcmd><![CDATA[gradle -p $srcpath :aaa-config-service:clean build --exclude-task test -Dprofile=test]]></buildcmd>
+        <buildcmdpd><![CDATA[gradle -p $srcpath :aaa-config-service:clean build --exclude-task test -Dprofile=product]]></buildcmdpd>  
+			  <imagetmpl>springboot_midload</imagetmpl>
+			</module>	
+	
+			<module>
+			  <name>eureka</name>
+			  <cname>eureka_c</cname>		  
+			  <src>git clone --depth 1 -b dev-alliance http://1.1.1.1:8899/xxx/zzz.git</src>
+			  <path>bbb-eureka-service</path>
+			  <buildcmd><![CDATA[gradle -p $srcpath :bbb-eureka-service:clean build --exclude-task test -Dprofile=test]]></buildcmd>
+			  <buildcmdpd><![CDATA[gradle -p $srcpath :bbb-eureka-service:clean build --exclude-task test -Dprofile=product]]></buildcmdpd>
+			  <imagetmpl>springboot_reg</imagetmpl>
+			</module>
+			
+			<module>
+			  <name>erp-service</name>
+			  <cname>erp-service_c</cname>
+				<depends>
+					<depend>mysqlerp</depend>
+					<depend>cacheerp</depend>
+					<depend>config</depend>
+				</depends>				  
+			  <rels>
+				  <rel>mysqlerp</rel>
+				  <rel>cacheerp</rel>
+				  <rel>config</rel>
+			  </rels>			  
+			  <src>git clone --depth 1 -b dev-alliance http://1.1.1.1:8899/xxx/fff.git</src>
+			  <path>ccc-c/ccc-erp-service</path>
+			  <buildcmd><![CDATA[gradle -p $srcpath :ccc-c:ccc-erp-service:clean build --exclude-task test -Dprofile=test;ejarloc .]]></buildcmd>
+        <buildcmdpd><![CDATA[gradle -p $srcpath :ccc-c:ccc-erp-service:clean build --exclude-task test -Dprofile=product;ejarloc .]]></buildcmdpd>			  
+			  <imagetmpl>springboot_highload</imagetmpl>
+			</module>			
+			
+			<module>
+			  <name>dddh5</name>
+			  <cname>dddh5_c</cname>
+			  <src>git clone --depth 1 -b dev-mobile http://1.1.1.1:8899/xxx/ggg.git</src>
+			  <buildcmd><![CDATA[yarn --cwd $srcpath install;yarn --cwd $srcpath run build:docker]]></buildcmd>
+			  <buildcmdpd><![CDATA[yarn --cwd $srcpath install;yarn --cwd $srcpath run build:dev]]></buildcmdpd>
+			  <imagetmpl>vuepkg_aph5</imagetmpl>
+			</module>				
+		
+			<module>
+			  <name>eeeweb</name>
+			  <cname>eeeweb_c</cname>
+			  <src>git clone --depth 1 -b pc-1.7.0-20210929 http://1.1.1.1:8899/xxx/lll.git</src>
+			  <buildcmd><![CDATA[yarn --cwd $srcpath install;yarn --cwd $srcpath run build:docker]]></buildcmd>
+			  <buildcmdpd>SAME</buildcmdpd>
+			  <imagetmpl>vuepkg_apweb</imagetmpl>
+			</module>	
+
+			<module>
+			  <name>configap</name>
+			  <cname>configap_c</cname>
+				<depends>
+					<depend>eureka</depend>
+				</depends>				  
+			  <rels>
+				  <rel>eureka</rel>
+			  </rels>					  		  
+			  <src>git clone --depth 1 -b config-20210915-test http://1.1.1.1:8899/xxx/tttt.git</src>
+			  <buildcmd><![CDATA[mvn -f $srcpath -s $setting clean package -Dmaven.test.skip=true -Dmaven.repo.local=mvn_repon_temp -Pdocker;ejarloc .]]></buildcmd>
+			  <buildcmdpd><![CDATA[mvn -f $srcpath -s $setting clean package -Dmaven.test.skip=true -Dmaven.repo.local=mvn_repon_temp -Pproduct;ejarloc .]]></buildcmdpd>
+			  <imagetmpl>springboot_midload</imagetmpl>
+			</module>	
+
+			<module>
+			  <name>fff-service</name>
+			  <cname>fff_c</cname>
+				<depends>
+					<depend>eureka</depend>
+					<depend>mysqlerp</depend>
+					<depend>cacheerp</depend>	
+					<depend>configap</depend>					
+				</depends>				  
+			  <rels>
+				  <rel>eureka</rel>
+				  <rel>mysqlerp</rel>
+				  <rel>cacheerp</rel>
+				  <rel>configap</rel>			
+			  </rels>					  		  
+			  <src>git clone --depth 1 -b fff-20210915-test http://1.1.1.1:8899/xxx/ooo.git</src>
+			  <buildcmd><![CDATA[mvn -f $srcpath -s $setting clean package install -Dmaven.test.skip=true -Dmaven.repo.local=mvn_repon_temp -Pdocker;ejarloc fff-api]]></buildcmd>
+			  <buildcmdpd><![CDATA[mvn -f $srcpath -s $setting clean package install -Dmaven.test.skip=true -Dmaven.repo.local=mvn_repon_temp -Pproduct;ejarloc fff-api]]></buildcmdpd>
+			  <imagetmpl>springboot_midload</imagetmpl>
+			</module>	
+	</modules>
+
+	</business>
+
+  <dbtransfer>
+  	<dbs>
+  	  <db>
+  		  <name>mysql_remote</name>
+  		  <host>tt.mysql.com</host>
+  		  <port>3306</port>
+  		  <root>my_root</root>
+  		  <pwd><![CDATA[2109dev@]]></pwd>  		  
+  	  </db>
+  	  <db>
+  		  <name>mysql_docker</name>
+  		  <host>127.0.0.1</host>
+  		  <port>3307</port>
+  		  <root>root</root>
+  		  <pwd><![CDATA[123456]]></pwd>
+  		  <createusers>
+  		  	<user>
+  		  		<acc>dev_root9</acc>
+  		  		<pwd><![CDATA[123hod\!@#]]></pwd>
+  		  		<gdb>alliance</gdb>
+  		  	</user>		  	
+  		  </createusers>  		  
+  	  </db>
+  	</dbs>
+  </dbtransfer>
+  
+
+  
+  <goonline>
+  	<transpath>/opt/release/</transpath>
+  	<prodpath>/opt/onlineproduct/</prodpath>
+  	<bkpath>/opt/onlinebk/</bkpath>
+  	<logroot>/opt/onlinelogs/</logroot>
+
+  	<stop>
+  		<cmd>
+  			<name>springboot</name>
+  			<sp>
+  			<![CDATA[
+  		      echo "========== stop module ${module}... =========="
+            pid=`ps -ef | grep ${module} | awk '{if($8=="'java'"){print $2}}'`
+            if [[ ${pid}  =~ ^[0-9]+$ ]]
+            then
+              echo "========== found ${module},PID->${pid} =========="
+              kill -9 ${pid}
+              echo "========== ${module} stopped =========="
+            else
+              echo "===========not found ${module} pid =========="
+            fi  			
+  			]]>
+  			</sp>
+  		</cmd>
+  		<cmd>
+  			<name>vue</name>
+  			<sp>
+  		  <![CDATA[
+  		      source /etc/profile
+  		      echo "========== stop module ${module}... =========="
+            pid=`ps -ef | grep nginx | awk '{if($9=="'master'"){print $2}}'`
+            if [[ ${pid}  =~ ^[0-9]+$ ]]
+            then
+              echo "========== found ${module},PID->${pid} =========="
+              nginx -s stop
+              echo "========== ${module} stopped =========="
+            else
+              echo "===========not found ${module} pid =========="
+            fi 
+  			]]>
+  			</sp>
+  		</cmd>
+  	</stop>
+  	<start>
+  		<cmd>
+  			<name>springboot</name>
+  			<sp>
+  			<![CDATA[
+  			    source /etc/profile
+  		      echo "========== start module ${module}... =========="
+            pid=`ps -ef | grep ${module} | awk '{if($8=="'java'"){print $2}}'`
+            if [[ ${pid}  =~ ^[0-9]+$ ]]
+            then
+              echo "========== found ${module},PID->${pid} =========="
+              echo "========== ${module} has already started =========="
+            else
+              echo "===========not found ${module} pid =========="
+              echo "========== start module ${modulef}...=========="
+  			      nohup java -Xmx512m -Xss64m -Xss8m -XX:ParallelGCThreads=2 -jar ${modulef} --spring.profiles.active=local > /dev/null 2>&1 &
+  			      echo "========== ${modulef} started =========="
+  			      exit
+            fi 
+  			]]>
+  			</sp>
+  		</cmd>
+  		<cmd>
+  			<name>vue</name>
+  			<sp>
+  				<![CDATA[
+  			    source /etc/profile
+  		      echo "========== start module ${module}... =========="
+            pid=`ps -ef | grep nginx | awk '{if($9=="'master'"){print $2}}'`
+            if [[ ${pid}  =~ ^[0-9]+$ ]]
+            then
+              echo "========== found ${module},PID->${pid} =========="
+              echo "========== ${module} has already started =========="
+            else
+              echo "===========not found ${module} pid =========="
+              echo "========== start module ${modulef}...=========="
+  			      nginx -c /usr/local/nginx/conf/nginx.conf
+  			      echo "========== ${modulef} started =========="
+  			      exit
+            fi 
+  				]]>
+  		</sp>
+  		</cmd>
+    </start>
+  	<restart>
+  		<cmd>
+  			<name>springboot</name>
+  			<sp>
+  			<![CDATA[
+  				  source /etc/profile
+  		      echo "========== stop module ${module}... =========="
+            pid=`ps -ef | grep ${module} | awk '{if($8=="'java'"){print $2}}'`
+            if [[ ${pid}  =~ ^[0-9]+$ ]]
+            then
+              echo "========== found ${module},PID->${pid} =========="
+              kill -9 ${pid}
+              echo "========== ${module} stopped =========="
+            else
+              echo "===========not found ${module} pid =========="
+            fi 
+
+  			    echo "========== start module ${modulef}...=========="
+  			    nohup java -Xmx512m -Xss64m -Xss8m -XX:ParallelGCThreads=2 -jar ${modulef} --spring.profiles.active=local > /dev/null 2>&1 &
+  			    echo "========== ${modulef} started =========="
+  			    exit              				
+  			]]>
+  			</sp>
+  		</cmd>  		
+  		<cmd>
+  			<name>vue</name>
+  			<sp>
+  			<![CDATA[
+  				  source /etc/profile
+  		      echo "========== stop module ${module}... =========="
+            pid=`ps -ef | grep nginx | awk '{if($9=="'master'"){print $2}}'`
+            if [[ ${pid}  =~ ^[0-9]+$ ]]
+            then
+              echo "========== found ${module},PID->${pid} =========="
+              nginx -s stop
+              echo "========== ${module} stopped =========="
+            else
+              echo "===========not found ${module} pid =========="
+            fi 
+
+  			    echo "========== start module ${modulef}...=========="
+  			    nginx -c /usr/local/nginx/conf/nginx.conf
+  			    echo "========== ${modulef} started =========="
+  			    exit  				
+  			]]>
+  			</sp>
+  		</cmd> 
+  	</restart>
+
+    <nodes>
+  	  <node>
+  		  <host>2.2.2.2</host>
+  		  <port>20039</port>
+  		  <user>root</user>
+  		  <modules>
+  			  <module>
+  				  <name>eureka</name>
+  				  <type>sb</type>
+  				  <start>springboot</start>
+  				  <stop>springboot</stop>
+  				  <restart>springboot</restart>
+  				  <logpath>${logroot}/eureka-server/eureka-server.log</logpath>
+  		    </module>
+  			  <module>
+  				  <name>config</name>
+  				  <type>sb</type>
+  				  <start>springboot</start>
+  				  <stop>springboot</stop>
+  				  <restart>springboot</restart>
+  				  <logpath>${logroot}/config-service/config-server.log</logpath>
+  		    </module>
+  			  <module>
+  				  <name>erp-service</name>
+  				  <type>sb</type>
+  				  <start>springboot</start>
+  				  <stop>springboot</stop>
+  				  <restart>springboot</restart>
+  				  <logpath>${logroot}/erp-service/erp-service.log</logpath>
+  		    </module> 		  
+  	    </modules>
+  	  </node>
+
+  	  <node>
+  		  <host>2.2.2.2</host>
+  		  <port>20039</port>
+  		  <user>root</user>
+  		  <modules>
+  			  <module>
+  				  <name>eureka</name>
+  				  <type>sb</type>
+  				  <start>springboot</start>
+  				  <stop>springboot</stop>
+  				  <restart>springboot</restart>
+  				  <logpath>${logroot}/eureka-server/eureka-server.log</logpath>
+  		    </module>
+  			  <module>
+  				  <name>config</name>
+  				  <type>sb</type>
+  				  <start>springboot</start>
+  				  <stop>springboot</stop>
+  				  <restart>springboot</restart>
+  				  <logpath>${logroot}/config-service/config-server.log</logpath>
+  		    </module>
+  			  <module>
+  				  <name>erp-service</name>
+  				  <type>sb</type>
+  				  <start>springboot</start>
+  				  <stop>springboot</stop>
+  				  <restart>springboot</restart>
+  				  <logpath>${logroot}/erp-service/erp-service.log</logpath>
+  		    </module>		  
+  	    </modules>  	  	
+  	  </node>
+  	  
+  	  <node>
+  		  <host>4.4.4.4</host>
+  		  <port>20039</port>
+  		  <user>root</user>
+  		  <modules>
+  			  <module>
+  				  <name>dddh5</name>
+  				  <type>vu1</type>
+  				  <start>vue</start>
+  				  <stop>vue</stop>
+  				  <restart>vue</restart>
+  				  <logpath>/usr/local/nginx/logs/gateway.log</logpath>
+  				  <depolypath>/opt/www/dddh5.ui/dist/</depolypath>
+  		    </module>		  
+  	    </modules>  	  	
+  	  </node>  	  	
+    </nodes>
+
+  </goonline>
+  
+</xml>

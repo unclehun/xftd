@@ -1,0 +1,18 @@
+       image: $imagename
+       container_name: $cname
+       restart: always
+       deploy:
+         resources:
+           limits:
+             cpus: '1.2'
+             memory: 384M       
+       links: 
+         $links
+       depends_on: 
+         $depends
+       ports: 
+         - 9087
+       volumes: 
+         - $drdir/opt/local/logs/:/logs/
+       #entrypoint: /usr/bin/entrypoint.sh -d $dependdt -c "java -JAVA_OPTS='-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/logs/' -jar -Dspring.profiles.active=docker /app.jar"
+       entrypoint: /usr/bin/entrypoint.sh -d $dependdt -c 'java -jar -Dspring.profiles.active=docker /app.jar'

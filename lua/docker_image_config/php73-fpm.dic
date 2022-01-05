@@ -1,0 +1,16 @@
+       image: phpdockerio/php73-fpm
+       container_name: $cname
+       restart: always
+       links:
+         $links
+       depends_on:
+         $depends
+       ports:
+         - "9000:9000"
+         - "8001:8000"
+         - "7000:9765"
+       volumes: 
+         - $drdir/nginx/www/html:/var/www/html
+         - $drdir/nginx/conf.d:/etc/nginx/conf.d
+       #entrypoint: $drdir/dtsh/entrypoint.sh -d mysql:3306,redis:6379 -c 'echo "start web service here"';
+       entrypoint: $drdir/dtsh/entrypoint.sh -d $dependdt -c 'echo "start web service here"';

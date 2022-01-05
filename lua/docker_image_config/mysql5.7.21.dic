@@ -1,0 +1,24 @@
+       image: mysql:5.7.21
+       #command: > 
+       #  /bin/bash -c '
+       #  sleep 4;
+       #  echo "sleep over";
+       #  nc -lk 0.0.0.0 3306;
+       #  '
+       container_name: $cname
+       restart: always
+       deploy:
+         resources:
+           limits:
+             cpus: '1.2'
+             memory: 384M         
+       links: 
+         $links
+       depends_on: 
+         $depends       
+       environment: 
+         MYSQL_ROOT_PASSWORD: 123456
+       ports: 
+         - "3307:3306"
+       volumes: 
+         - $drdir/mysql/data:/var/lib/mysql

@@ -1,0 +1,19 @@
+       image: nginx:1.21.1
+       container_name: $cname
+       restart: always
+       deploy:
+         resources:
+           limits:
+             cpus: '0.50'
+             memory: 100M         
+       links: 
+         $links
+       depends_on: 
+         $depends
+       ports: 
+         - "81:80"
+         - "443:443"
+       volumes: 
+         - $drdir/nginx/www/html:/var/www/html
+         - $drdir/nginx/conf.d:/etc/nginx/conf.d
+       entrypoint: $drdir/dtsh/entrypoint.sh -d $dependdt -c 'echo "start web service here"';
