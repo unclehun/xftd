@@ -449,20 +449,20 @@ function buildvue(modulename,nodepath, srcpath, buildcmd, buildcmdpd, releasebas
   end
 
   local rp = srcpath..'/dist'
-  
-  print('buildprod=',buildprod)
-  if(not buildprod) then
-  --if(true ~= buildprod) then
-    print('no build prod package,buildvue return rp:',rp)
-    return {nil,rp}
-  end
 
-  local rpcn = rp..'.test'
+  local rpcn = rp..'.test/'
   dpc = 'mv '..rp..' '..rpcn
   print(dpc)
   t = io.popen(dpc)
   a = t:read("*all")
   print(a)
+  
+  print('buildprod=',buildprod)
+  if(not buildprod) then
+  --if(true ~= buildprod) then
+    print('no build prod package,buildvue return rpcn:',rpcn)
+    return {nil,rpcn}
+  end  
   
   --##线上包
   local ssame = false

@@ -7,8 +7,7 @@ require("fileopt")
 require("commonutils")
 
 
---xftd_root=string.gsub(lfs.currentdir(),"/lua",'')
-xftd_root=lfs.currentdir()
+xftd_root=string.gsub(lfs.currentdir(),"/lua",'')
 
 --tools config
 java_base=xftd_root..'/jdk1.8/bin'

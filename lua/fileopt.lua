@@ -35,7 +35,8 @@ function fileExists(path)
 end
 
 function delFile(file)
-  print(os.remove(file))
+  --print(os.remove(file))
+  os.remove(file)
 end
 
 function length_of_file(filename)

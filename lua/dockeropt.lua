@@ -201,7 +201,7 @@ function buildimagemini(releasepath,releasefile,port,imagename,entrypointsh,teln
   ct=ct..'RUN dpkg -i vim_8.2.2434-3_amd64.deb\n'
   
   
-  local dpc = 'rm -rf '..releasepath..'/entrypoint.sh&&cp '..entrypointsh..' '..releasepath..'entrypoint.sh&&chmod 777 '..releasepath..'/entrypoint.sh'
+  local dpc = 'rm -rf '..releasepath..'/entrypoint.sh&&cp '..entrypointsh..' '..releasepath..'/entrypoint.sh&&chmod 777 '..releasepath..'/entrypoint.sh'
   local t = io.popen(dpc)
   print(dpc)
   local a = t:read("*all")
@@ -374,13 +374,13 @@ function buildimageftmini(releasepath,tdir,port,imagename,entrypointsh,nginxconf
   ct=ct..'RUN dpkg -i libselinux1_3.1-3_amd64.deb\n'   
   ct=ct..'RUN dpkg -i vim_8.2.2434-3_amd64.deb\n'  
 
-  local dpc = 'rm -rf '..releasepath..'/entrypoint.sh&&cp '..entrypointsh..' '..releasepath..'entrypoint.sh&&chmod 777 '..releasepath..'/entrypoint.sh'
+  local dpc = 'rm -rf '..releasepath..'/entrypoint.sh&&cp '..entrypointsh..' '..releasepath..'/entrypoint.sh&&chmod 777 '..releasepath..'/entrypoint.sh'
   local t = io.popen(dpc)
   print(dpc)
   local a = t:read("*all")
   print(a)
   
-  dpc = 'rm -rf '..releasepath..'/nginx_config_router&&cp '..nginxconf..' '..releasepath..'nginx_config_router&&chmod 777 '..releasepath..'/nginx_config_router'
+  dpc = 'rm -rf '..releasepath..'/nginx_config_router&&cp '..nginxconf..' '..releasepath..'/nginx_config_router&&chmod 777 '..releasepath..'/nginx_config_router'
   t = io.popen(dpc)
   print(dpc)
   a = t:read("*all")

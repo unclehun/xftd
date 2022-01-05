@@ -26,7 +26,7 @@ function makeDockercomposeConfig(xftdconfig,drdir,dccfp,tmpbase)
   configcontent:Add('  version: "3" \n')
   configcontent:Add('  services: \n')
 
-  print("sysname:",sysname)
+  --print("sysname:",sysname)
 
   local basemodules = getbasemodules()
   local businessmodules = getbizmodules()
@@ -40,7 +40,7 @@ function makeDockercomposeConfig(xftdconfig,drdir,dccfp,tmpbase)
 
       local tmplf = 'docker_image_config/'..imagetmpl..'.dic'
       local ports = getmoduleinnerport(tmplf)
-      print('moduleports',modulename,ports)
+      --print('moduleports',modulename,ports)
       moduleports:insert(modulename,ports)
     end
   end
@@ -53,7 +53,7 @@ function makeDockercomposeConfig(xftdconfig,drdir,dccfp,tmpbase)
 
       local tmplf = 'docker_image_config/'..imagetmpl..'.dic'
       local ports = getmoduleinnerport(tmplf)
-      print('moduleports',modulename,ports)
+      --print('moduleports',modulename,ports)
       moduleports:insert(modulename,ports)
     end    
   end
@@ -96,7 +96,7 @@ function makeDockercomposeConfig(xftdconfig,drdir,dccfp,tmpbase)
 
         if ''~=dependdt then
           dependdt = string.sub(dependdt, 1, -2) 
-          print('dependdt',dependdt)
+          --print('dependdt',dependdt)
         end        
       end
 
@@ -140,7 +140,7 @@ function makeDockercomposeConfig(xftdconfig,drdir,dccfp,tmpbase)
           dependsc = dependsc..'  - '..q..' \n         '
           --根据$depends算出$dependdt
           local ports = moduleports:getpair(q)
-          print('q,ports:',q,ports)
+          --print('q,ports:',q,ports)
           for x, z in pairs(ports) do 
             dependdt = dependdt..q..':'..z..','
           end
@@ -149,7 +149,7 @@ function makeDockercomposeConfig(xftdconfig,drdir,dccfp,tmpbase)
         
         if ''~=dependdt then
           dependdt = string.sub(dependdt, 1, -2) 
-          print('dependdt',dependdt)
+          --print('dependdt',dependdt)
         end
       end
 
@@ -177,9 +177,9 @@ function makeDockercomposeConfig(xftdconfig,drdir,dccfp,tmpbase)
   for j,q in pairs(configcontent) do
     configf = configf..q
   end
-  print(configf)
+  --print(configf)
   
-  print('dccfp:',dccfp)
+  --print('dccfp:',dccfp)
   writefile(dccfp,configf) 
   
 end
@@ -209,13 +209,13 @@ function getmoduleinnerport(tmplf)
           local rs = string.sub(mr,idx+1)
           --rr为外部端口
           local rr = string.sub(mr,1,idx-1)
-          print('outter port:'..rr)
+          --print('outter port:'..rr)
           rs = string.gsub(rs,"\"","")
-          print('inner port:'..rs)
+          --print('inner port:'..rs)
           rslt:Add(rs)        
         elseif(nil ~= mrs) then
           local rs = string.gsub(mrs,"\"","")
-          print('inner port:'..rs)
+          --print('inner port:'..rs)
           rslt:Add(rs)        
         end
   
@@ -252,7 +252,7 @@ function processtmpl(tmplfs, cname, modulename, relsc, dependsc, drdir, dependdt
       -- 是否有要删除的link* 有,直接跳过该行
       --if(true == string.contains(l,'links:') or true == string.contains(l,'$links')) then
       if(string.contains(l,'links:') or string.contains(l,'$links')) then
-        print('del line rel:'..l)
+        --print('del line rel:'..l)
         signal = true
       end
     end
@@ -261,7 +261,7 @@ function processtmpl(tmplfs, cname, modulename, relsc, dependsc, drdir, dependdt
       -- 是否有要删除的depend* 有,直接跳过该行
       --if(true == string.contains(l,'depends_on:') or true == string.contains(l,'$depends') or (true == string.contains(l,'entrypoint:') and true == string.contains(l,'$dependdt'))) then
       if(string.contains(l,'depends_on:') or string.contains(l,'$depends') or (string.contains(l,'entrypoint:') and string.contains(l,'$dependdt'))) then
-        print('del line dep:'..l)
+        --print('del line dep:'..l)
         signal = true
       end            
     end

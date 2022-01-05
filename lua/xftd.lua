@@ -561,13 +561,15 @@ function updateModules(configfile,modulenames,confighisbase,releasebase)
   end
   ---多个模块处理循环结束    
 
-  if(true == rsf) then
+  --if(true == rsf) then
+  if(rsf) then
     local dccft = confighisbase..'/docker-compose-'..sysname..'.yml'
     delFile(dccft)
     makeDockercomposeConfig(config, docker_mappingbase, dccft, tmp_base)
 
     --更新容器
-    if(true == rc) then
+    --if(true == rc) then
+    if(rc) then    
       local dpc1 = 'docker-compose -f '..dccft..' --compatibility up -d'
       local t1 = io.popen(dpc1)
       print(dpc1)

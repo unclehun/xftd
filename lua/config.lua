@@ -6,7 +6,6 @@ require("map")
 require("list")
 require("fileopt")
 --require("lfs")
-require("fileopt")
 require("commonutils")
 
 --require("buildopt")
