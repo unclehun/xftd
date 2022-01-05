@@ -13,6 +13,7 @@
 /lua/redis/
 /lua/test/
 /lua/gitconfig.config
+/gitconfig.config
 *.xml
 !xftdconfig_sample.xml
 docker-command.txt

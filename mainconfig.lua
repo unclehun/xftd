@@ -7,7 +7,8 @@ require("fileopt")
 require("commonutils")
 
 
-xftd_root=string.gsub(lfs.currentdir(),"/lua",'')
+--xftd_root=string.gsub(lfs.currentdir(),"/lua",'')
+xftd_root=lfs.currentdir()
 
 --tools config
 java_base=xftd_root..'/jdk1.8/bin'
@@ -18,7 +19,7 @@ node_base=xftd_root..'/node-v10.16.3-darwin-x64/bin'
 mysqlclient_base=xftd_root..'/mysqlbin'
 git_dir = '/usr/bin/'
 
-local gcf = readfile('gitconfig.config')
+local gcf = readfile('../gitconfig.config')
 git_user = gcf:split('\n')[1]
 git_user_pwd = gcf:split('\n')[2]
 print(git_user, git_user_pwd)

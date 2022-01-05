@@ -1,7 +1,7 @@
 --[[
   clarkewanglei@gmail.com
 --]]
-
+package.path = package.path .. ';../?.lua'
 
 require("lfs")
 require("fileopt")
